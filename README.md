@@ -1,6 +1,6 @@
 # record_to_anki.sh
 
-Records desktop audio and automatically adds it to the last card that was added. Basically a \*nix version of [this](https://rentry.co/mining#hotkey-for-audio).
+Records desktop audio and automatically adds it to the last card that was added. Basically a \*nix version of [this](https://web.archive.org/web/20250224124523/https://rentry.co/mining#hotkey-for-audio).
 
 By default also normalizes audio to -16LUFS, so you don't get jumpscared while doing anki reps on your laptop.
 
