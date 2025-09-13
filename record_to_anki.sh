@@ -33,7 +33,7 @@ ankiconnect() {
 }
 
 _is_mac() {
-    [ "$OSTYPE" = "darwin"* ]
+    [[ "$OSTYPE" = "darwin"* ]]
 }
 
 _record_mac() {
