@@ -65,6 +65,10 @@ record_audio() {
     esac
 }
 
+_close_notif_mac() {
+    terminal-notifier -remove $1
+}
+
 _close_notif_dbus() {
     dbus-send                                           \
         --session                                       \
@@ -81,11 +85,11 @@ _close_notif_dbus() {
 close_notif() {
     case "$OSTYPE" in
         "darwin"*)
-            terminal-notifier -remove $replaceid
+            _close_notif_mac $1
             ;;
 
         "linux"* | "freebsd"*)
-            _close_notif_dbus
+            _close_notif_dbus $1
             ;;
 
         *)
@@ -93,6 +97,10 @@ close_notif() {
             exit 1
             ;;
     esac
+}
+
+_notify_mac() {
+    terminal-notifier -ignoreDnD -group $replaceid -title "$1" -message "$2"
 }
 
 _notify_dbus() {
@@ -105,10 +113,6 @@ _notify_dbus() {
     fi
 
     notify-send $([ $inf -eq 1 ] && echo "-t 0") -a $appname -r $replaceid -u "$lvl" "$2" "$3"
-}
-
-_notify_mac() {
-    terminal-notifier -ignoreDnD -group $replaceid -title "$1" -message "$2"
 }
 
 notify() {
