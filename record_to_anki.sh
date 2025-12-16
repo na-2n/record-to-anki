@@ -107,7 +107,7 @@ _notify_dbus() {
     lvl="$1"
     inf=0
 
-    if "$lvl" == "inf"*; then
+    if [[ "$lvl" == "inf"* ]]; then
         lvl="normal"
         inf=1
     fi
