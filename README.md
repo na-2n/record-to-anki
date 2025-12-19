@@ -10,7 +10,7 @@ By default also normalizes audio to -16LUFS, so you don't get jumpscared while d
 - curl
 - jq
 - ffmpeg
-- mpv (can easily be replaced by audio player of your choice if you wish to do so)
+- mpv or vlc (can easily be replaced by audio player of your choice if you wish to do so)
 
 **macOS:**
 

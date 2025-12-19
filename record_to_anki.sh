@@ -28,6 +28,10 @@ use_clipboard=0
 media_name=""
 rec_pid=0
 
+
+# hack for steamos, so we can launch from KDE's built in shortcuts and use xclip binary installed in ~/.local/bin
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+
 ankiconnect() {
     curl $ankiconnect_url -X POST -H "Content-Type: application/json; charset=UTF-8" -d "$1" 2>/dev/null
 }
@@ -133,7 +137,15 @@ notify() {
 }
 
 play_audio() {
-    mpv --no-config --force-window=no --loop-file=no --load-scripts=no "$1"
+    if which mpv > /dev/null; then
+        mpv --no-config --force-window=no --loop-file=no --load-scripts=no "$1"
+    elif which vlc > /dev/null; then
+        vlc --intf dummy "$1" vlc://quit
+    elif which ffplay > /dev/null; then
+        ffplay "$1"
+    else
+        notify critical "Could not playback audio" "No audio player found"
+    fi
 }
 
 copy_mp3() {
@@ -192,7 +204,15 @@ done
 if [ -z "$anki_media_dir" ]; then
     case "$OSTYPE" in
         "linux"* | "freebsd"*)
-            anki_media_dir="$HOME/.local/share/Anki2/$anki_profile/collection.media"
+            if which flatpak > /dev/null && \
+                _fp_id=$(flatpak list --columns=name,application | grep Anki | cut -f2)
+            then
+                # flatpak
+                anki_media_dir="$HOME/.var/app/$_fp_id/data/Anki2/$anki_profile/collection.media"
+            else
+                # regular installation
+                anki_media_dir="$HOME/.local/share/Anki2/$anki_profile/collection.media"
+            fi
             ;;
 
         "darwin"*)
